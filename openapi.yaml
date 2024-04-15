@@ -1,0 +1,211 @@
+openapi: 3.0.3
+info:
+  title: Sturdy Octo Happiness
+  description: |-
+    This is a sample payment API
+  version: 1.0.1
+servers:
+  - url: http://localhost/api/v1
+tags:
+  - name: Auth
+    description: Authorization
+  - name: User
+    description: Managing the user
+  - name: Account
+    description: Account operations
+  - name: Transaction
+    description: Transaction operations
+paths:
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: Login using email and password
+      operationId: login
+      requestBody:
+        $ref: '#/components/requestBodies/Login'
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthToken'
+        '403':
+          description: Invalid credentials supplied
+        '422':
+          description: Validation exception
+  /refresh-token:
+    get:
+      tags:
+        - Auth
+      summary: Login using email and password
+      security:
+        - bearerAuth: []
+      operationId: refresh_token
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthToken'
+        '403':
+          description: Invalid credentials supplied
+  /users:
+    post:
+      tags:
+        - User
+      summary: Create user
+      operationId: register
+      requestBody:
+        $ref: '#/components/requestBodies/CreateUser'
+      responses:
+        '201':
+          $ref: '#/components/responses/User'
+        '422':
+          description: Validation exception
+  /users/{id}:
+    get:
+      tags:
+        - User
+      summary: Get user data
+      operationId: get_user
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        '200':
+          $ref: '#/components/responses/User'
+        '403':
+          description: Unauthorized
+    patch:
+      tags:
+        - User
+      summary: Update user data
+      operationId: update_user
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateUser'
+      responses:
+        '200':
+          $ref: '#/components/responses/User'
+        '403':
+          description: Unauthorized
+        '422':
+          description: Validation exception
+components:
+  schemas:
+    Authorization:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Operation status
+          example: success
+        authorization:
+          type: object
+          properties:
+            token:
+              type: string
+              description: JWT Token
+            type:
+              type: string
+              example: bearer
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: ulid
+        email:
+          type: string
+          description: User email
+          example: john@example.com
+        name:
+          type: string
+          description: User name
+          example: John Doe
+        created_at:
+          type: string
+          format: datetime
+          description: User creation date
+          example: 2024-04-15T18:49:08.000+00:00
+        updated_at:
+          type: string
+          format: datetime
+          description: User last updated at
+          example: 2024-04-15T18:49:08.000+00:00
+  requestBodies:
+    Login:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+                format: email
+                example: apple@example.com
+              password:
+                type: string
+    CreateUser:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - email
+              - name
+              - password
+            properties:
+              email:
+                type: string
+                format: email
+                example: apple@example.com
+              name:
+                type: string
+                example: John Doe
+              password:
+                type: string
+    UpdateUser:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+                example: apple@example.com
+              name:
+                type: string
+                example: John Doe
+              password:
+                type: string
+
+  responses:
+    AuthToken:
+      description: Authorization token request result
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Authorization'
+    User:
+      description: User data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+  parameters:
+    ID:
+      name: ID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: ulid
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
