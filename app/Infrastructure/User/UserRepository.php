@@ -11,6 +11,8 @@ use App\Domain\User\UserSearchCriteria;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Id;
 use App\Domain\User\ValueObject\Name;
+use App\Infrastructure\Account\AccountRepository;
+use App\Infrastructure\Laravel\Models\AccountModel;
 use App\Infrastructure\Laravel\Models\UserModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -83,7 +85,7 @@ final class UserRepository implements \App\Domain\User\UserRepository
         }
 
         return array_map(
-            static fn (UserModel $user) => self::map($user),
+            static fn(UserModel $user) => self::map($user),
             $userModel->get()->all()
         );
     }
@@ -94,6 +96,7 @@ final class UserRepository implements \App\Domain\User\UserRepository
             Id::fromPrimitives($userModel->id),
             Email::fromString($userModel->email),
             Name::fromString($userModel->name),
+            $userModel->accounts->map(static fn(AccountModel $accountModel) => AccountRepository::map($accountModel))->toArray(),
             DateTimeValueObject::fromPrimitives($userModel->created_at->format(DateTimeInterface::DATETIME_FORMAT)),
             $userModel->updated_at ? DateTimeValueObject::fromPrimitives($userModel->updated_at->format(DateTimeInterface::DATETIME_FORMAT)) : null,
         );

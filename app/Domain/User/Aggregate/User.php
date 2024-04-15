@@ -4,27 +4,28 @@ declare(strict_types=1);
 
 namespace App\Domain\User\Aggregate;
 
+use App\Domain\Account\Aggregate\Account;
 use App\Domain\Shared\ValueObject\DateTimeValueObject;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Id;
 use App\Domain\User\ValueObject\Name;
-use App\Domain\User\ValueObject\Password;
 
 final class User
 {
     private function __construct(
-        private Id $id,
+        private readonly Id $id,
         private Email $email,
         private Name $name,
+        private array $accounts,
         private DateTimeValueObject $createdAt,
         private ?DateTimeValueObject $updatedAt,
-    ) {
-    }
+    ) {}
 
     public static function create(
         Id $id,
         Email $email,
         Name $name,
+        array $accounts,
         DateTimeValueObject $createdAt,
         ?DateTimeValueObject $updatedAt = null,
     ): self {
@@ -32,6 +33,7 @@ final class User
             $id,
             $email,
             $name,
+            $accounts,
             $createdAt,
             $updatedAt,
         );
@@ -50,6 +52,14 @@ final class User
     public function name(): Name
     {
         return $this->name;
+    }
+
+    /**
+     * @return Account[]
+     */
+    public function accounts(): array
+    {
+        return $this->accounts;
     }
 
     public function createdAt(): DateTimeValueObject

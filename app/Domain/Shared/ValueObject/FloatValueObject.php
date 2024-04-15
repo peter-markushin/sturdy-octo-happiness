@@ -8,7 +8,7 @@ class FloatValueObject
 {
     protected float $value;
 
-    const int PRECISION = 10;
+    public const int PRECISION = 10;
 
     public function __construct(float $value)
     {

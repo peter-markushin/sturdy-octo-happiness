@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
-
 class UserStorySeeder extends BaseSeeder
 {
     /**

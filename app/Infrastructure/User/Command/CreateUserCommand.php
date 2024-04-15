@@ -6,7 +6,6 @@ namespace App\Infrastructure\User\Command;
 
 use App\Domain\Shared\Bus\Command;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 final readonly class CreateUserCommand implements Command
@@ -15,9 +14,7 @@ final readonly class CreateUserCommand implements Command
         public string $email,
         public string $name,
         public string $password,
-    )
-    {
-    }
+    ) {}
 
     public static function createFromRequest(FormRequest $request): self
     {

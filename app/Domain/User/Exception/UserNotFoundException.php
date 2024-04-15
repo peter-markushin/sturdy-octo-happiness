@@ -6,7 +6,4 @@ namespace App\Domain\User\Exception;
 
 use App\Domain\Shared\Exception\NotFoundException;
 
-final class UserNotFoundException extends NotFoundException
-{
-
-}
+final class UserNotFoundException extends NotFoundException {}

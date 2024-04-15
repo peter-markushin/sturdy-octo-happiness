@@ -86,6 +86,37 @@ paths:
           description: Unauthorized
         '422':
           description: Validation exception
+  /users/{id}/accounts:
+    get:
+      tags:
+        - User
+        - Account
+      summary: Get user accounts
+      operationId: get_user_accounts
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        '200':
+          $ref: '#/components/responses/UserAccounts'
+        '403':
+          description: Unauthorized
+    post:
+      tags:
+        - User
+        - Account
+      summary: Create user account
+      operationId: create_user_account
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateUserAccount'
+      responses:
+        '200':
+          $ref: '#/components/responses/UserAccount'
+        '403':
+          description: Unauthorized
+        '422':
+          description: Validation exception
 components:
   schemas:
     Authorization:
@@ -110,6 +141,7 @@ components:
         id:
           type: string
           format: ulid
+          example: 01HVHYDK40F2HHJYMJANJ0DVH5
         email:
           type: string
           description: User email
@@ -118,6 +150,31 @@ components:
           type: string
           description: User name
           example: John Doe
+        created_at:
+          type: string
+          format: datetime
+          description: User creation date
+          example: 2024-04-15T18:49:08.000+00:00
+        updated_at:
+          type: string
+          format: datetime
+          description: User last updated at
+          example: 2024-04-15T18:49:08.000+00:00
+    Account:
+      type: object
+      properties:
+        id:
+          type: string
+          format: ulid
+          example: 01HVHYDK40F2HHJYMJANJ0DVH5
+        type:
+          type: string
+          description: Acconunt type
+          example: user
+        balance:
+          type: integer
+          description: Account balance in cents
+          example: 9977
         created_at:
           type: string
           format: datetime
@@ -181,7 +238,19 @@ components:
                 example: John Doe
               password:
                 type: string
-
+    CreateUserAccount:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - balance
+            properties:
+              balance:
+                type: integer
+                description: Initial balance in cents, 0 or positive
+                example: 1395
   responses:
     AuthToken:
       description: Authorization token request result
@@ -195,6 +264,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/User'
+    UserAccount:
+      description: User accounts
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Account'
+    UserAccounts:
+      description: User accounts
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Account'
   parameters:
     ID:
       name: ID
@@ -203,6 +286,7 @@ components:
       schema:
         type: string
         format: ulid
+        example: 01HVHYDK40F2HHJYMJANJ0DVH5
 
   securitySchemes:
     bearerAuth:

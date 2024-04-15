@@ -4,31 +4,21 @@ docker = docker compose run workspace
 help: # List commands
 	@grep '^[^#(?!.PHONY)[:space:]].*:' Makefile
 
-
-.PHONY: setup-db
-setup-db: # Creates database, runs migrations and migrates data
-	bin/console doctrine:database:create -e catalog
-	bin/console doctrine:database:create -e test
-
-	php bin/console doctrine:migrations:migrate --no-interaction
-	php bin/console doctrine:migrations:migrate -e test --no-interaction
-
-	php bin/console app:migrate-data brands
-	php bin/console app:migrate-data print_providers
-	php bin/console app:migrate-data categories
-	php bin/console app:migrate-data blueprints
-
 .PHONY: composer-install
 composer-install: # Run composer install
 	$(docker) composer install
 
+.PHONY: migrate
+migrate: # Run migrations
+	$(docker) php artisan migrate
+
 .PHONY: routes
 routes: # See application routes
-	$(docker) php bin/console debug:router
+	$(docker) php artisan route:list
 
 .PHONY: cache-clear
 cache-clear: # Clear cache
-	$(docker) php bin/console cache:clear
+	$(docker) php artisan optimize:clear
 
 .PHONY: ssh
 ssh: # SSH into container
@@ -56,11 +46,11 @@ functional: # Run functional tests
 
 .PHONY: style
 style: # Check code style
-	$(docker) php ./vendor/bin/phpcs --standard=phpcs.xml --parallel=8 --report=checkstyle
+	$(docker) ./vendor/bin/pint
 
 .PHONY: stan
 stan: # Run phpstan
-    $(docker) php -dmemory_limit=1024M ./vendor/bin/phpstan analyse
+	$(docker) php -dmemory_limit=1024M ./vendor/bin/phpstan analyse
 
 .PHONY: stan-fix
 stan-fix: # Run phpstan and generate baseline

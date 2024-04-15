@@ -12,9 +12,7 @@ use App\Infrastructure\User\Command\UpdateUserCommand;
 
 final class UpdateUserCommandHandler implements Command
 {
-    public function __construct(private UserRepository $userRepository)
-    {
-    }
+    public function __construct(private UserRepository $userRepository) {}
 
     public function __invoke(UpdateUserCommand $command): User
     {

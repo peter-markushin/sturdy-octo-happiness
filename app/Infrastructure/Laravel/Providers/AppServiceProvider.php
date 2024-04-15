@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Laravel\Providers;
 
+use App\Domain\Account\AccountRepository;
 use App\Domain\User\UserRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
         $this->registerIdeHelper();
 
         $this->app->bind(UserRepository::class, \App\Infrastructure\User\UserRepository::class);
+        $this->app->bind(AccountRepository::class, \App\Infrastructure\Account\AccountRepository::class);
     }
 
     /**

@@ -14,9 +14,7 @@ use App\Infrastructure\User\Command\CreateUserCommand;
 
 final readonly class CreateUserCommandHandler
 {
-    public function __construct(private UserRepository $userRepository)
-    {
-    }
+    public function __construct(private UserRepository $userRepository) {}
 
     public function __invoke(CreateUserCommand $command): User
     {
@@ -24,6 +22,7 @@ final readonly class CreateUserCommandHandler
             Id::random(),
             Email::fromString($command->email),
             Name::fromString($command->name),
+            [],
             DateTimeValueObject::now(),
         );
 
