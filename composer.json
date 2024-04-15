@@ -1,39 +1,36 @@
 {
-    "name": "specialtactics/laravel-api-boilerplate",
-    "description": "An API boilerplate for Laravel",
+    "name": "peter-markushin/sturdy-octo-happiness",
+    "description": "An API",
     "keywords": [
         "laravel",
-        "boilerplate",
         "api",
-        "api boilerplate",
         "laravel api"
     ],
     "license": "MIT",
     "type": "project",
     "authors": [
         {
-            "name": "Max Snow",
-            "email": "contact@maxsnow.me"
+            "name": "Piotr Markushyn",
+            "email": "piotr-m@piotr-m.net"
         }
     ],
     "require": {
-        "php": "^7.3|^8.0",
-        "fideloper/proxy": "^4.4",
-        "fruitcake/laravel-cors": "^2.0",
+        "php": "^8.3",
         "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^8.0",
+        "hibit-dev/criteria": "^1.1",
+        "laravel/framework": "^11.3",
         "laravel/tinker": "^2.5",
-        "specialtactics/l5-api": "^3.0"
+        "php-open-source-saver/jwt-auth": "^2.2"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "^2.9",
-        "beyondcode/laravel-dump-server": "^1.4",
-        "facade/ignition": "^2.7",
+        "barryvdh/laravel-ide-helper": "*",
+        "canvural/larastan-strict-rules": "^2.1",
         "fakerphp/faker": "^1.9.1",
+        "larastan/larastan": "*",
+        "laravel/pint": "*",
+        "laravel/telescope": "^5.0",
         "mockery/mockery": "^1.4.1",
-        "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3",
-        "laravel/telescope": "^4.4"
+        "phpunit/phpunit": "^9.3.3"
     },
     "autoload": {
         "psr-4": {
@@ -69,7 +66,8 @@
     "extra": {
         "laravel": {
             "dont-discover": [
-                "laravel/telescope"
+                "laravel/telescope",
+                "barryvdh/laravel-ide-helper"
             ]
         }
     },

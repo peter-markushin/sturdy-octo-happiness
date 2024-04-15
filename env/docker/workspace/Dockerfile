@@ -2,7 +2,7 @@ ARG PHP_VERSION=${PHP_VERSION}
 
 FROM php:${PHP_VERSION}-cli
 
-RUN echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 # Install packages for required extensions
 RUN apt-get update \
@@ -28,25 +28,18 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # Install Laravel required extensions
-RUN docker-php-ext-install json && \
-    docker-php-ext-install mbstring && \
-    docker-php-ext-install xml && \
-    docker-php-ext-install ctype && \
-    docker-php-ext-install tokenizer && \
-    docker-php-ext-install pdo_pgsql && \
-    docker-php-ext-install opcache && \
-    docker-php-ext-install zip && \
-    docker-php-ext-configure intl && docker-php-ext-install intl && \
-    docker-php-ext-install bcmath && \
-    docker-php-ext-install sockets
-
-# Install required PECL extensions
-RUN pecl install \
-    redis
-
-# Enable above
-RUN docker-php-ext-enable \
-    redis
+RUN install-php-extensions \
+    @composer \
+    bcmath \
+    ctype \
+    intl \
+    opcache \
+    pdo_pgsql \
+    redis \
+    sockets \
+    sodium \
+    uuid \
+    zip
 
 ###########################################################################
 # Laradock non-root user:
@@ -75,7 +68,7 @@ ENV TZ ${TZ}
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 ###########################################################################
-# User Aliases
+# UserModel Aliases
 ###########################################################################
 
 USER root

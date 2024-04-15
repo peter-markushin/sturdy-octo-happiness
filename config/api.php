@@ -168,7 +168,7 @@ return [
     */
 
     'auth' => [
-        'jwt' => 'Dingo\Api\Auth\Provider\JWT',
+        //        'jwt' => 'Dingo\Api\Auth\Provider\JWT',
     ],
 
     /*
@@ -198,7 +198,7 @@ return [
     |
     */
 
-    'transformer' => env('API_TRANSFORMER', Dingo\Api\Transformer\Adapter\Fractal::class),
+    //    'transformer' => env('API_TRANSFORMER', Dingo\Api\Transformer\Adapter\Fractal::class),
 
     /*
     |--------------------------------------------------------------------------
@@ -214,8 +214,6 @@ return [
     'defaultFormat' => env('API_DEFAULT_FORMAT', 'json'),
 
     'formats' => [
-
-        'json' => Specialtactics\L5Api\Http\Response\Format\Json::class,
 
     ],
 

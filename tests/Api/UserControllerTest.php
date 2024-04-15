@@ -2,12 +2,13 @@
 
 namespace Tests\Api;
 
+use App\Infrastructure\Laravel\Models\UserModel;
 use Tests\ApiTestCase;
-use App\Models\User;
 
 class UserControllerTest extends ApiTestCase
 {
-    public function testGetAll() {
+    public function testGetAll()
+    {
         $jsonResponse = $this->actingAsAdmin()->json('GET', '/users');
 
         // Check status and structure
@@ -26,8 +27,9 @@ class UserControllerTest extends ApiTestCase
             );
     }
 
-    public function testPost() {
-        $testUser = User::factory()->make()->getAttributes();
+    public function testPost()
+    {
+        $testUser = UserModel::factory()->make()->getAttributes();
 
         $jsonResponse = $this->actingAsAdmin()->json('POST', '/users', $testUser);
 

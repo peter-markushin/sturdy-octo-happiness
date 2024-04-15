@@ -39119,7 +39119,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 	}
 
 	function getZone (name, caller) {
-		
+
 		name = normalizeName(name);
 
 		var zone = zones[name];
@@ -53119,7 +53119,7 @@ var staticRenderFns = [
         staticClass:
           "card-header d-flex align-items-center justify-content-between"
       },
-      [_c("h5", [_vm._v("Authenticated User")])]
+      [_c("h5", [_vm._v("Authenticated UserModel")])]
     )
   }
 ]
@@ -53196,7 +53196,7 @@ var render = function() {
             _vm._v(" "),
             _c("tr", [
               _c("td", { staticClass: "table-fit font-weight-bold" }, [
-                _vm._v("User")
+                _vm._v("UserModel")
               ]),
               _vm._v(" "),
               _c("td", [
@@ -53323,7 +53323,7 @@ var render = function() {
                         slotProps.entry.content.user.email
                           ? _c("span", [
                               _vm._v(
-                                "\n                    User: " +
+                                "\n                    UserModel: " +
                                   _vm._s(slotProps.entry.content.user.email) +
                                   " (" +
                                   _vm._s(slotProps.entry.content.user.id) +
@@ -53332,7 +53332,7 @@ var render = function() {
                             ])
                           : _c("span", [
                               _vm._v(
-                                "\n                    User: N/A\n                "
+                                "\n                    UserModel: N/A\n                "
                               )
                             ])
                       ])
@@ -55980,7 +55980,7 @@ var supportsPushState = inBrowser && (function () {
   return window.history && 'pushState' in window.history
 })();
 
-// use User Timing api (if present) for more accurate key precision
+// use UserModel Timing api (if present) for more accurate key precision
 var Time = inBrowser && window.performance && window.performance.now
   ? window.performance
   : Date;

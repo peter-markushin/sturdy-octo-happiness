@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePasswordResetsTable extends Migration
 {
-    const TABLE_NAME = 'password_resets';
+    public const TABLE_NAME = 'password_resets';
 
     /**
      * Run the migrations.

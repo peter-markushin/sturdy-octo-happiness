@@ -44,43 +44,33 @@ class BaseSeeder extends Seeder
      *
      * @return void
      */
-    public function runFake()
-    {
-    }
+    public function runFake() {}
 
     /**
      * Run seeds to be ran only on production environments
      *
      * @return void
      */
-    public function runProduction()
-    {
-    }
+    public function runProduction() {}
 
     /**
      * Run seeds to be ran on every environment (including production)
      *
      * @return void
      */
-    public function runAlways()
-    {
-    }
+    public function runAlways() {}
 
     /**
      * Run before all any seeding
      *
      * @return void
      */
-    public function before()
-    {
-    }
+    public function before() {}
 
     /**
      * Run after all seeding
      *
      * @return void
      */
-    public function after()
-    {
-    }
+    public function after() {}
 }

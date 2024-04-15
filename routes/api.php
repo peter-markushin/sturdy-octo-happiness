@@ -1,7 +1,12 @@
 <?php
 
-use Dingo\Api\Routing\Router;
-use Illuminate\Http\Request;
+use App\UI\Http\Auth\AuthController;
+use App\UI\Http\Auth\LoginController;
+use App\UI\Http\Auth\RefreshTokenController;
+use App\UI\Http\User\CreateUserController;
+use App\UI\Http\User\GetUserController;
+use App\UI\Http\User\UpdateUserController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,51 +26,21 @@ Route::get('/', function () {
     echo 'Welcome to our API';
 });
 
-/** @var \Dingo\Api\Routing\Router $api */
-$api = app('Dingo\Api\Routing\Router');
-$api->version('v1', ['middleware' => ['api']], function (Router $api) {
-    /*
-     * Authentication
-     */
-    $api->group(['prefix' => 'auth'], function (Router $api) {
-        $api->group(['prefix' => 'jwt'], function (Router $api) {
-            $api->get('/token', 'App\Http\Controllers\Auth\AuthController@token');
-        });
-    });
+Route::prefix('api')
+    ->middleware('api')
+    ->name('api.')
+    ->group(function () {
+        Route::prefix('v1')
+            ->name('v1.')
+            ->namespace('\\')
+            ->group(function () {
+                Route::post('/login', LoginController::class)->name('login');
+                Route::post('/users', CreateUserController::class)->name('create_user');
 
-    /*
-     * Authenticated routes
-     */
-    $api->group(['middleware' => ['api.auth']], function (Router $api) {
-        /*
-         * Authentication
-         */
-        $api->group(['prefix' => 'auth'], function (Router $api) {
-            $api->group(['prefix' => 'jwt'], function (Router $api) {
-                $api->get('/refresh', 'App\Http\Controllers\Auth\AuthController@refresh');
-                $api->delete('/token', 'App\Http\Controllers\Auth\AuthController@logout');
-            });
-
-            $api->get('/me', 'App\Http\Controllers\Auth\AuthController@getUser');
-        });
-
-        /*
-         * Users
-         */
-        $api->group(['prefix' => 'users', 'middleware' => 'check_role:admin'], function (Router $api) {
-            $api->get('/', 'App\Http\Controllers\UserController@getAll');
-            $api->get('/{uuid}', 'App\Http\Controllers\UserController@get');
-            $api->post('/', 'App\Http\Controllers\UserController@post');
-            $api->put('/{uuid}', 'App\Http\Controllers\UserController@put');
-            $api->patch('/{uuid}', 'App\Http\Controllers\UserController@patch');
-            $api->delete('/{uuid}', 'App\Http\Controllers\UserController@delete');
-        });
-
-        /*
-         * Roles
-         */
-        $api->group(['prefix' => 'roles'], function (Router $api) {
-            $api->get('/', 'App\Http\Controllers\RoleController@getAll');
-        });
+                Route::middleware(['auth:api'])->group(function () {
+                    Route::get('/refresh-token', RefreshTokenController::class)->name('refresh_token');
+                    Route::get('/users/{id}', GetUserController::class)->name('get_user');
+                    Route::patch('/users/{id}', UpdateUserController::class)->name('update_user');
+                });
     });
 });
